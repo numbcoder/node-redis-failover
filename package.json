@@ -1,0 +1,31 @@
+{
+  "name": "node_redis_failover",
+  "version": "0.1.0",
+  "description": "redis failover solution based on zooKeeper",
+  "keywords": [
+    "redis",
+    "failover",
+    "zookeeper",
+    "cluster"
+  ],
+  "main": "index.js",
+  "bin": {
+    "redis-failover": "./bin/redis-failover"
+  },
+  "scripts": {
+    "test": "node test/test.js",
+    "zk": "node test/zk_test.js"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "dependencies": {
+    "redis": "~0.8.6",
+    "node-zookeeper-client": "~0.2.0",
+    "async": "~0.2.9",
+    "log4js": "~0.6.9",
+    "commander": "~2.0.0"
+  },
+  "author": "numbcoder",
+  "license": "MIT"
+}
