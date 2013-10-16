@@ -11,7 +11,7 @@ npm install -g node-redis-failover
 
 ## Usage
 
-### start redis watcher
+### Start redis watcher
 
 ```shell
 redis-failover -h
@@ -43,12 +43,15 @@ start with `forever`
 forever start -m 10 redis-failover -c config.json
 ```
 
-### use redis in application
 
+### Use redis in your application
+
+install:
 ```shell
 npm install node-redis-failover --save
 ```
 
+example code:
 ```javascript
 var redisFailover = require('node-redis-failover');
 
@@ -85,4 +88,4 @@ redis.on('masterChange', function() {
 
 (The MIT License)
 
-Copyright (c) 2013 Johnny Wang<wzhao23@gmail.com>
+Copyright (c) 2013 Johnny Wang <wzhao23@gmail.com>
