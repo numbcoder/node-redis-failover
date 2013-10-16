@@ -11,20 +11,19 @@ program
   .version(version)
   .usage('-n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381')
   .option('-n, --nodes <nodes>', 'Comma-separated redis host:port pairs')
-  .option('-z, --zkservers <servers>', 'Comma-separated ZooKeeper host:port pairs')
+  .option('-z, --zk-servers <servers>', 'Comma-separated ZooKeeper host:port pairs')
   .option('-p, --password [password]', 'Redis password')
   .option('-c, --config [path]', 'Path to JSON config file')
   .option('-l, --log [path]', 'The log file path')
-  .option('--zkchroot [rootpath]', 'Path to ZooKeepers chroot')
-  .option('--zkusername [username]', 'ZooKeepers username')
-  .option('--zkpassword [password]', 'ZooKeepers password')
+  .option('--zk-chroot [rootpath]', 'Path to ZooKeepers chroot')
+  .option('--zk-username [username]', 'ZooKeepers username')
+  .option('--zk-password [password]', 'ZooKeepers password')
   .parse(process.argv);
 
 
 if (program.config) {
   var content = fs.readFileSync(program.config, 'utf8');
   var conf = JSON.parse(content);
-  console.log(conf);
   program = conf;
 }
 
@@ -33,7 +32,7 @@ if (!program.nodes) {
   return;
 }
 
-if (!program.zkservers) {
+if (!program.zkServers) {
   console.error('error: zkservers can not be empty!');
   return;
 }
@@ -41,13 +40,11 @@ if (!program.zkservers) {
 var opts = {
   redisServers  : program.nodes,
   redisPassword : program.password,
-  zkServers     : program.zkservers,
-  zkChroot      : program.zkchroot,
-  zkUsername    : program.zkusername,
-  zkPassword    : program.zkpassword
+  zkServers     : program.zkServers,
+  zkChroot      : program.zkChroot,
+  zkUsername    : program.zkUsername,
+  zkPassword    : program.zkPassword
 };
-
-console.log(opts);
 
 if (program.log) {
   logger.configure({
@@ -58,6 +55,8 @@ if (program.log) {
     replaceConsole: true
   });
 }
+
+logger.getLogger().info('start options: ', opts);
 
 new Watcher(opts);
 

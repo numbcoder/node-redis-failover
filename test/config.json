@@ -1,6 +1,6 @@
 {
   "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
-  "zkservers": "localhost:2181",
-  "zkchroot": "/test/a",
+  "zkServers": "127.0.0.1:2181",
+  "zkChroot": "/pomelo",
   "log": "a.log"
 }
