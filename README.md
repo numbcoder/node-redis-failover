@@ -1,4 +1,4 @@
-Node Redis Failover
+Node Redis Failover ![NPM version](https://badge.fury.io/js/node-redis-failover.png)
 =======
 A redis failover solution based on ZooKeeper for Node.js
 
