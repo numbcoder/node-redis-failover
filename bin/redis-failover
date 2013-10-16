@@ -47,6 +47,11 @@ var opts = {
 };
 
 if (program.log) {
+  // if log is a dir path
+  if (program.log.match(/\/$/)) {
+    program.log = program.log + 'redis-failover-' + process.pid + '.log';
+  }
+
   logger.configure({
     appenders: [
       {type: 'console'},
