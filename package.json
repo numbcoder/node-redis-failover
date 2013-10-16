@@ -1,7 +1,7 @@
 {
-  "name": "node_redis_failover",
+  "name": "node-redis-failover",
   "version": "0.1.0",
-  "description": "redis failover solution based on zooKeeper",
+  "description": "redis failover solution based on ZooKeeper",
   "keywords": [
     "redis",
     "failover",
@@ -13,8 +13,11 @@
     "redis-failover": "./bin/redis-failover"
   },
   "scripts": {
-    "test": "node test/test.js",
-    "zk": "node test/zk_test.js"
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/numbcoder/node-redis-failover"
   },
   "engines": {
     "node": ">=0.8"
