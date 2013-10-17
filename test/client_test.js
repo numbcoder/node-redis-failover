@@ -1,7 +1,7 @@
 var redisFailover = require('../index');
 
 
-var redis = redisFailover.createClient({servers:'localhost:2181'});
+var redis = redisFailover.createClient({servers:'localhost:2181', chroot: '/test'});
 redis.on('ready', function() {
   redis.getClient().ping(function(err, info) {
     console.log(info);
