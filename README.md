@@ -88,4 +88,4 @@ redis.on('masterChange', function() {
 
 (The MIT License)
 
-Copyright (c) 2013 Johnny Wang <wzhao23@gmail.com>
+Copyright (c) 2013 Johnny Wong <wzhao23@gmail.com>
