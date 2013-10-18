@@ -22,7 +22,7 @@ function auth() {
   client.addAuthInfo('digest', new Buffer(authentication));
 }
 
-function init () {
+function init() {
   client.create('/test', function(err, path) {
     if (err) {return console.error(err);}
     console.log(typeof path);

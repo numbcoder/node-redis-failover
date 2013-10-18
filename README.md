@@ -74,8 +74,13 @@ redis.on('ready', function() {
   });
 }); 
 
+// catch error
+redis.on('error', function(err) {
+  console.warn(err);
+});
+
 redis.on('change', function() {
-    console.log('redis state changed, %j', redis.redisState);
+  console.log('redis state changed, %j', redis.redisState);
 });
 
 redis.on('masterChange', function() {
