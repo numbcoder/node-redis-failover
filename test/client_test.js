@@ -18,7 +18,11 @@ redis.on('ready', function() {
   });
 
   redis.on('masterChange', function() {
-    console.log('master changed, %s', redis.masterClient);
+    console.log('master changed, %s', redis.masterClient.name);
+  });
+
+  redis.on('error', function(err) {
+    console.log('err,', err);
   });
   
   setInterval(function() {
