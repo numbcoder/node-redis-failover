@@ -2,6 +2,9 @@ Node Redis Failover ![NPM version](https://badge.fury.io/js/node-redis-failover.
 =======
 A redis failover solution based on ZooKeeper for Node.js
 
+Architecture chart:
+![Architecture](http://ww1.sinaimg.cn/large/60512853gw1e9qzaunhsij20dw0bi752.jpg)
+
 ## Installation
 Install with npm:
 
