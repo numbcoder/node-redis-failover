@@ -5,6 +5,7 @@
   "keywords": [
     "redis",
     "failover",
+    "high-availability",
     "zookeeper",
     "cluster"
   ],

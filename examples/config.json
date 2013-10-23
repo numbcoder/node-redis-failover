@@ -1,6 +1,8 @@
 {
   "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
+  "password": "abc123",
   "zkServers": "127.0.0.1:2181",
   "zkChroot": "/test",
-  "log": "logs/"
+  "log": "logs/",
+  "pid": "a.pid"
 }

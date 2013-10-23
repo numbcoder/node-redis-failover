@@ -18,6 +18,7 @@ program
   .option('--zk-chroot [rootpath]', 'Path to ZooKeepers chroot')
   .option('--zk-username [username]', 'ZooKeepers username')
   .option('--zk-password [password]', 'ZooKeepers password')
+  .option('--pid [path]', 'pid file')
   .parse(process.argv);
 
 
@@ -43,7 +44,8 @@ var opts = {
   zkServers     : program.zkServers,
   zkChroot      : program.zkChroot,
   zkUsername    : program.zkUsername,
-  zkPassword    : program.zkPassword
+  zkPassword    : program.zkPassword,
+  pidFile       : program.pid
 };
 
 if (program.log) {
@@ -59,6 +61,10 @@ if (program.log) {
     ],
     replaceConsole: true
   });
+}
+
+if (opts.pidFile) {
+  fs.writeFileSync(opts.pidFile, process.pid);
 }
 
 logger.getLogger().info('start options: ', opts);
