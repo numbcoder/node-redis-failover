@@ -6,6 +6,12 @@ Architecture chart:
 
 ![Architecture](http://ww1.sinaimg.cn/large/60512853gw1e9qzaunhsij20dw0bi752.jpg)
 
+## Features
+
+* Automatic master/slave failover
+* Read/Write Splitting
+* All components high availability
+
 ## Installation
 Install with npm:
 
