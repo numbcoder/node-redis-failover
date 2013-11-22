@@ -45,6 +45,9 @@ var opts = {
   zkChroot      : program.zkChroot,
   zkUsername    : program.zkUsername,
   zkPassword    : program.zkPassword,
+  pingTimeout   : program.pingTimeout,
+  pingInterval  : program.pingInterval,
+  maxFailures   : program.maxFailures,
   pidFile       : program.pid
 };
 
