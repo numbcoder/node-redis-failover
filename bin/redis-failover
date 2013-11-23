@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var JSONC = require('json-comments');
 var program = require('commander');
 var fs = require('fs');
 var version = require('../package.json').version;
@@ -24,7 +25,7 @@ program
 
 if (program.config) {
   var content = fs.readFileSync(program.config, 'utf8');
-  var conf = JSON.parse(content);
+  var conf = JSONC.parse(content);
   program = conf;
 }
 

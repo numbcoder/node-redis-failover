@@ -1,7 +1,11 @@
 {
+  // redis nodes
   "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
+  // redis password
   "password": "abc123",
+  // zookeeper nodes
   "zkServers": "127.0.0.1:2181",
+  // zookeeper chroot
   "zkChroot": "/test",
   "log": "logs/",
   "pid": "a.pid"
