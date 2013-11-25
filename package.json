@@ -1,6 +1,6 @@
 {
   "name": "node-redis-failover",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "redis failover solution based on ZooKeeper",
   "keywords": [
     "redis",

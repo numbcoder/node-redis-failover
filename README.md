@@ -47,7 +47,7 @@ start a redis watcher (we recommend the wathers' count should be an odd number, 
 ```shell
 redis-failover -n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381
 ```
-with a config file `config.json`:
+with a config file `config.json` (config json file support comments use [json-comments](https://github.com/numbcoder/json-comments)):
 ```js
 {
   // redis nodes
