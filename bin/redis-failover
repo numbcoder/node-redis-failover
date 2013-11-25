@@ -8,6 +8,11 @@ var version = require('../package.json').version;
 var Watcher = require('../lib/watcher_manager');
 var logger = require('log4js');
 
+// default config values
+var PING_TIMEOUT = 6 * 1000;
+var PING_INTERVAL = 3 * 1000;
+var MAX_FAILURES = 3;
+
 program
   .version(version)
   .usage('-n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381')
@@ -16,6 +21,9 @@ program
   .option('-p, --password [password]', 'Redis password')
   .option('-c, --config [path]', 'Path to JSON config file')
   .option('-l, --log [path]', 'The log file path')
+  .option('--ping-interval [time]', 'redis ping interval. default: 3000ms')
+  .option('--ping-timeout [time]', 'redis ping timeout. default: 6000ms')
+  .option('--max-failures [times]', 'max failures times of the redis ping. default: 3')
   .option('--zk-chroot [rootpath]', 'Path to ZooKeepers chroot')
   .option('--zk-username [username]', 'ZooKeepers username')
   .option('--zk-password [password]', 'ZooKeepers password')
@@ -46,10 +54,9 @@ var opts = {
   zkChroot      : program.zkChroot,
   zkUsername    : program.zkUsername,
   zkPassword    : program.zkPassword,
-  pingTimeout   : program.pingTimeout,
-  pingInterval  : program.pingInterval,
-  maxFailures   : program.maxFailures,
-  pidFile       : program.pid
+  pingTimeout   : parseInt(program.pingTimeout) || PING_TIMEOUT,
+  pingInterval  : parseInt(program.pingInterval) || PING_INTERVAL,
+  maxFailures   : parseInt(program.maxFailures) || MAX_FAILURES
 };
 
 if (program.log) {
@@ -67,8 +74,8 @@ if (program.log) {
   });
 }
 
-if (opts.pidFile) {
-  fs.writeFileSync(opts.pidFile, process.pid);
+if (program.pid) {
+  fs.writeFileSync(program.pid, process.pid);
 }
 
 logger.getLogger().info('start options: ', opts);

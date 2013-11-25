@@ -2,11 +2,25 @@
   // redis nodes
   "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
   // redis password
-  "password": "abc123",
+  //"password": "abc123",
+  
+  // redis ping timeout default 6000ms
+  //"pingTimeout": 4000,
+
+  // redis ping interval(ms). default 3000ms
+  //"pingInterval": 1000,
+
+  // the maxFailures for the redis. default 3
+  //"maxFailures": 5,
+
   // zookeeper nodes
   "zkServers": "127.0.0.1:2181",
   // zookeeper chroot
   "zkChroot": "/test",
+
+  // log path
   "log": "logs/",
+
+  // pid file
   "pid": "a.pid"
 }

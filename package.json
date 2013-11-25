@@ -28,8 +28,8 @@
     "node-zookeeper-client": "~0.2.0",
     "async": "~0.2.9",
     "log4js": "~0.6.9",
-    "commander": "~2.0.0",
-    "json-comments": "~0.2.0"
+    "commander": "~2.1.0",
+    "json-comments": "~0.2.1"
   },
   "author": "numbcoder",
   "license": "MIT"
