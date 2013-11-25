@@ -47,6 +47,39 @@ start a redis watcher (we recommend the wathers' count should be an odd number, 
 ```shell
 redis-failover -n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381
 ```
+with a config file `config.json`:
+```js
+{
+  // redis nodes
+  "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
+  // redis password
+  //"password": "abc123",
+  
+  // redis ping timeout default 6000ms
+  //"pingTimeout": 6000,
+
+  // redis ping interval(ms). default 3000ms
+  //"pingInterval": 3000,
+
+  // the maxFailures for the redis. default 3
+  //"maxFailures": 3,
+
+  // zookeeper nodes
+  "zkServers": "127.0.0.1:2181",
+  // zookeeper chroot
+  "zkChroot": "/test",
+
+  // log path
+  "log": "logs/",
+
+  // pid file
+  "pid": "a.pid"
+}
+```
+start a watcher:
+```bash
+redis-failover -c config.json
+```
 
 start with `forever`
 ```shell
