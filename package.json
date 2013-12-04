@@ -1,11 +1,11 @@
 {
   "name": "node-redis-failover",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "redis failover solution based on ZooKeeper",
   "keywords": [
     "redis",
     "failover",
-    "high-availability",
+    "high availability",
     "zookeeper",
     "cluster"
   ],
@@ -24,12 +24,12 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "redis": "~0.8.6",
-    "node-zookeeper-client": "~0.2.0",
-    "async": "~0.2.9",
-    "log4js": "~0.6.9",
-    "commander": "~2.1.0",
-    "json-comments": "~0.2.1"
+    "redis": "0.9.1",
+    "node-zookeeper-client": "0.2.0",
+    "async": "0.2.9",
+    "log4js": "0.6.9",
+    "commander": "2.1.0",
+    "json-comments": "0.2.1"
   },
   "author": "numbcoder",
   "license": "MIT"
