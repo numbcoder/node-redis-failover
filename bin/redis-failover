@@ -5,82 +5,69 @@ var program = require('commander');
 var fs = require('fs');
 var version = require('../package.json').version;
 
-var Watcher = require('../lib/watcher_manager');
+//var Watcher = require('../lib/watcher_manager');
+var cluster = require('../lib/cluster');
 var logger = require('log4js');
 
-// default config values
-var PING_TIMEOUT = 6 * 1000;
-var PING_INTERVAL = 3 * 1000;
-var MAX_FAILURES = 3;
+function loadConfig(filename) {
+  var content = fs.readFileSync(filename, 'utf8');
+  var config = JSONC.parse(content);
+
+  if (!config.zooKeeper) {
+    throw new Error('zooKeeper can not be empty!');
+  }
+
+  if (!config.nodes) {
+    throw new Error('error: redis nodes can not be empty!');
+  }
+  
+  return config;
+}
 
 program
   .version(version)
-  .usage('-n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381')
-  .option('-n, --nodes <nodes>', 'Comma-separated redis host:port pairs')
-  .option('-z, --zk-servers <servers>', 'Comma-separated ZooKeeper host:port pairs')
-  .option('-p, --password [password]', 'Redis password')
+  .usage('-c config.json')
   .option('-c, --config [path]', 'Path to JSON config file')
-  .option('-l, --log [path]', 'The log file path')
-  .option('--ping-interval [time]', 'redis ping interval. default: 3000ms')
-  .option('--ping-timeout [time]', 'redis ping timeout. default: 6000ms')
-  .option('--max-failures [times]', 'max failures times of the redis ping. default: 3')
-  .option('--zk-chroot [rootpath]', 'Path to ZooKeepers chroot')
-  .option('--zk-username [username]', 'ZooKeepers username')
-  .option('--zk-password [password]', 'ZooKeepers password')
-  .option('--pid [path]', 'pid file')
   .parse(process.argv);
 
 
-if (program.config) {
-  var content = fs.readFileSync(program.config, 'utf8');
-  var conf = JSONC.parse(content);
-  program = conf;
+if (!program.config) {
+  throw new Error('command error: No config file!');
 }
 
-if (!program.nodes) {
-  console.error('error: redis nodes can not be empty!');
-  return;
-}
+var config = loadConfig(program.config);
 
-if (!program.zkServers) {
-  console.error('error: zkservers can not be empty!');
-  return;
-}
+fs.watchFile(program.config, function() {
+  var conf = loadConfig(program.config);
+  cluster.reset(conf);
+});
 
-var opts = {
-  redisServers  : program.nodes,
-  redisPassword : program.password,
-  zkServers     : program.zkServers,
-  zkChroot      : program.zkChroot,
-  zkUsername    : program.zkUsername,
-  zkPassword    : program.zkPassword,
-  pingTimeout   : parseInt(program.pingTimeout) || PING_TIMEOUT,
-  pingInterval  : parseInt(program.pingInterval) || PING_INTERVAL,
-  maxFailures   : parseInt(program.maxFailures) || MAX_FAILURES
-};
 
-if (program.log) {
+
+if (config.log) {
   // if log is a dir path
-  if (program.log.match(/\/$/)) {
-    program.log = program.log + 'redis-failover-' + process.pid + '.log';
+  var logfile = config.log;
+  if (logfile.match(/\/$/)) {
+    logfile = logfile + 'redis-cluster-' + process.pid + '.log';
   }
 
   logger.configure({
     appenders: [
       {type: 'console'},
-      {type: 'file', filename: program.log, maxLogSize: 300 * 1024 * 1024, backups: 1}
+      {type: 'file', filename: logfile, maxLogSize: 300 * 1024 * 1024, backups: 1}
     ],
     replaceConsole: true
   });
 }
 
-if (program.pid) {
-  fs.writeFileSync(program.pid, process.pid);
+if (config.pid) {
+  fs.writeFileSync(config.pid, process.pid);
 }
 
-logger.getLogger().info('start options: ', opts);
+logger.getLogger().info('start options: ', config);
 
-new Watcher(opts);
+//new Watcher(opts);
+cluster.setup(config);
 
 
 // vim: set ft=javascript
