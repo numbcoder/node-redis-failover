@@ -1,5 +1,5 @@
 var redis = require('redis');
-var client = redis.createClient('6679','0.0.0.0', {retry_max_delay: 5000, max_attempts: 4});
+var client = redis.createClient('6479','0.0.0.0', {retry_max_delay: 5000, max_attempts: 4});
 
 client.on('error', function(err) {
   console.error('client err %s, ', err.message, client.ready);
@@ -53,6 +53,7 @@ setTimeout(function() {
   //client.end();
 }, 12000);
 return;
+
 client.on('ready', function() {
   console.log('ready');
   client.blpop('ass', 10, function(err, r) {

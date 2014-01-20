@@ -37,8 +37,14 @@ if (!program.config) {
 
 var config = loadConfig(program.config);
 
-fs.watchFile(program.config, function() {
-  var conf = loadConfig(program.config);
+fs.watchFile(program.config, {interval: 15000}, function() {
+  try {
+    var conf = loadConfig(program.config);
+  } catch (e) {
+    logger.getLogger().error('reload config file error: ', e);
+    return;
+  }
+
   cluster.reset(conf);
 });
 

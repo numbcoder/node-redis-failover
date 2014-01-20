@@ -10,7 +10,7 @@
   "nodes": [
     {
       "name": "node_1",
-      "servers": "127.0.0.1:6379,127.0.0.1:6479",
+      "servers": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
       // redis password
       //"password": "abc123",
       // redis ping timeout default 6000ms
