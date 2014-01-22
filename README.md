@@ -137,3 +137,7 @@ redis.on('masterChange', function() {
 (The MIT License)
 
 Copyright (c) 2013 Johnny Wong <wzhao23@gmail.com>
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/numbcoder/node-redis-failover/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
