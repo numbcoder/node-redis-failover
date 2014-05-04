@@ -11,6 +11,8 @@ Architecture chart:
 * Automatic master/slave failover
 * Read/Write Splitting
 * All components high availability
+* Support cluster
+* Custom sharding router
 
 ## Installation
 Install with npm:
@@ -26,48 +28,53 @@ npm install -g node-redis-failover
 ```shell
 redis-failover -h
 
-  Usage: redis-failover -n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381
+  Usage: redis-failover -c config.json
 
   Options:
 
-    -h, --help                  output usage information
-    -V, --version               output the version number
-    -n, --nodes <nodes>         Comma-separated redis host:port pairs
-    -z, --zk-servers <servers>  Comma-separated ZooKeeper host:port pairs
-    -p, --password [password]   Redis password
-    -c, --config [path]         Path to JSON config file
-    -l, --log [path]            The log file path
-    --zk-chroot [rootpath]      Path to ZooKeepers chroot
-    --zk-username [username]    ZooKeepers username
-    --zk-password [password]    ZooKeepers password
+    -h, --help           output usage information
+    -V, --version        output the version number
+    -c, --config [path]  Path to JSON config file
 ```
 
 start a redis watcher (we recommend the wathers' count should be an odd number, and more than 3):
 
 ```shell
-redis-failover -n 127.0.0.1:6379,127.0.0.1:6479 -z 172.17.5.72:2381,172.17.5.73:2381,172.17.5.74:2381
+redis-failover -c config.json
 ```
+
 with a config file `config.json` (config json file support comments use [json-comments](https://github.com/numbcoder/json-comments)):
+
 ```js
 {
-  // redis nodes
-  "nodes": "127.0.0.1:6379,127.0.0.1:6479,127.0.0.1:6579",
-  // redis password
-  //"password": "abc123",
-  
-  // redis ping timeout default 6000ms
-  //"pingTimeout": 6000,
+  // zookeeper
+  "zooKeeper": {
+    "servers": "127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183",
+    "chroot": "/test"
+    //"username": "abssd",
+    //"password": 'asdfefe'
+  },
+  // redis cluster nodes
+  "nodes": [
+    {
+      "name": "node_1",
+      "servers": "127.0.0.1:6379,127.0.0.1:6479",
+      // redis password
+      "password": "abc123",
+      // redis ping timeout default 6000 ms
+      "pingTimeout": 4000,
 
-  // redis ping interval(ms). default 3000ms
-  //"pingInterval": 3000,
+      // redis ping interval(ms). default 3000 ms
+      "pingInterval": 1000,
 
-  // the maxFailures for the redis. default 3
-  //"maxFailures": 3,
-
-  // zookeeper nodes
-  "zkServers": "127.0.0.1:2181",
-  // zookeeper chroot
-  "zkChroot": "/test",
+      // the maxFailures for the redis. default 3
+      "maxFailures": 5
+    },
+    {
+      "name": "node_2",
+      "servers": "127.0.0.1:7000,127.0.0.1:7001"
+    }
+  ],
 
   // log path
   "log": "logs/",
@@ -76,12 +83,15 @@ with a config file `config.json` (config json file support comments use [json-co
   "pid": "a.pid"
 }
 ```
+
 start a watcher:
+
 ```bash
 redis-failover -c config.json
 ```
 
 start with `forever`
+
 ```shell
 forever start -m 10 redis-failover -c config.json
 ```
@@ -90,11 +100,13 @@ forever start -m 10 redis-failover -c config.json
 ### Use redis in your application
 
 install:
+
 ```shell
 npm install node-redis-failover --save
 ```
 
 example code:
+
 ```javascript
 var redisFailover = require('node-redis-failover');
 
@@ -106,28 +118,27 @@ var zookeeper = {
 var redis = redisFailover.createClient(zookeeper);
 
 redis.on('ready', function() {
-  // master client
-  redis.masterClient.ping(function(err, res){
-    console.log('ping master', res);
+  // get the master client of 'node_1' (default master)
+  redis.getClient('node_1').ping(function(err, info) {
+    console.log(info);
   });
 
-  // slave client
-  redis.getClient('slave').ping(function(err, res) {
-    console.log('ping slave', res);
+  // get the slave clinet of 'node_2'
+  redis.getClient('node_1', 'slave').ping(function(err, info) {
+    console.log(info);
   });
-}); 
+});
 
-// catch error
+redis.on('change', function(name, state) {
+  console.log('redis %s state changed, %j', name, state);
+});
+
+redis.on('masterChange', function(name, state) {
+  console.log('%s master changed, %s', name, state);
+});
+
 redis.on('error', function(err) {
-  console.warn(err);
-});
-
-redis.on('change', function() {
-  console.log('redis state changed, %j', redis.redisState);
-});
-
-redis.on('masterChange', function() {
-  console.log('master changed, %s', redis.masterClient);
+  console.log('err,', err);
 });
 
 ```
@@ -136,7 +147,7 @@ redis.on('masterChange', function() {
 
 (The MIT License)
 
-Copyright (c) 2013 Johnny Wong <wzhao23@gmail.com>
+Copyright (c) 2014 Johnny Wong <wzhao23@gmail.com>
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/numbcoder/node-redis-failover/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
