@@ -37,7 +37,7 @@ redis-failover -h
     -c, --config [path]  Path to JSON config file
 ```
 
-start a redis watcher (we recommend the wathers' count should be an odd number, and more than 3):
+start a redis watcher (we recommend the watchers' count should be an odd number, and more than 3):
 
 ```shell
 redis-failover -c config.json
