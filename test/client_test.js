@@ -26,7 +26,13 @@ redis.on('ready', function() {
   redis.on('error', function(err) {
     console.log('err,', err);
   });
+
+  redis.on('nodeAdd', function(name, state) {
+    console.log('new node add to cluster name: %s, state: %j', name, state);
+    console.log('client1 master: %s', redis.getClient(name).name);
+  });
   
+  //return;
   setInterval(function() {
     var client1 = redis.getClient('node_1');
     var client2 = redis.getClient('node_2');
