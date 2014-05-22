@@ -1,3 +1,12 @@
+0.2.3 / 2014-01-15
+==================
+* add `nodeAdd` events
+* upgrade denpendencies
+
+0.2.0 / 2014-01-20
+==================
+* support cluster (multiple redis nodes monitor)
+
 0.1.9 / 2014-01-15
 ==================
 * support redis 2.8
