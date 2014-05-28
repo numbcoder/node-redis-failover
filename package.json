@@ -1,6 +1,6 @@
 {
   "name": "node-redis-failover",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "redis failover solution based on ZooKeeper",
   "keywords": [
     "redis",
@@ -24,7 +24,7 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "redis": "0.10.2",
+    "redis": "0.10.3",
     "node-zookeeper-client": "0.2.1",
     "async": "0.2.9",
     "log4js": "0.6.14",
