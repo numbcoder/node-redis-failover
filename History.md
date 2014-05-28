@@ -1,4 +1,9 @@
-0.2.3 / 2014-01-15
+0.2.4 / 2014-05-28
+==================
+* fix event bug
+* update node_redis version
+
+0.2.3 / 2014-05-15
 ==================
 * add `nodeAdd` events
 * upgrade denpendencies
